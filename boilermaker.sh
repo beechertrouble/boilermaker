@@ -38,9 +38,12 @@ account_name=$2
 user_name=$3
 
 if [ "$repo_name" = "" ]; then
-	printf "Please enter the git REPO_NAME and press enter. (what should we call this repo? maybe client-project-purpose ?) \n"
+	printf "What should we call this git repo?\n"
+	printf "Maybe something like : client-project-purpose ?\n"
+	printf "Please enter the git REPO_NAME and press enter. ( press enter to use '$dir_name' ) \n"
 	read repo_name
-	printf "Please enter your git ACCOUNT_NAME and press enter. (this is the account your new repo will live under.) \n"
+	printf "What github account should we put this repo under?\n"
+	printf "Please enter your git ACCOUNT_NAME and press enter. \n"
 	read account_name 
 	printf "Please enter your git USER_NAME and press enter. (this is so we can curl) \n"
 	read user_name 
@@ -53,7 +56,7 @@ fi
 printf "repo name = $repo_name\n"
 printf "account name = $account_name\n"
 
-curl -u user_name https://api.github.com/account_name/repos -d '{ "name": "repo_name" }'
+curl -u "$user_name" https://api.github.com/"$account_name"/repos -d '{ "name": "$repo_name" }'
 git init
 git add .
 git commit -am 'boilermaker slammed! ( initial commit )'
