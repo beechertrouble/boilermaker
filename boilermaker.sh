@@ -35,12 +35,15 @@ printf "${BLUE}boilermaker : ${NORMAL}creating new git repo ...\n"
 repo_name=$1
 dir_name=`basename $(pwd)`
 account_name=$2
+user_name=$3
 
 if [ "$repo_name" = "" ]; then
-	printf "Please enter your ACCOUNT_NAME and press enter. \n"
-	read account_name 
-	printf "Please enter the REPO_NAME and press enter. \n"
+	printf "Please enter the git REPO_NAME and press enter. (what should we call this repo? maybe client-project-purpose ?) \n"
 	read repo_name
+	printf "Please enter your git ACCOUNT_NAME and press enter. (this is the account your new repo will live under.) \n"
+	read account_name 
+	printf "Please enter your git USER_NAME and press enter. (this is so we can curl) \n"
+	read user_name 
 fi
 
 if [ "$repo_name" = "" ]; then
@@ -50,6 +53,7 @@ fi
 printf "repo name = $repo_name\n"
 printf "account name = $account_name\n"
 
+curl -u user_name https://api.github.com/account_name/repos -d '{ "name": "repo_name" }'
 git init
 git add .
 git commit -am 'boilermaker slammed! ( initial commit )'
