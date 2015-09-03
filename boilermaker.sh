@@ -38,6 +38,9 @@ account_name=$2
 username=`git config github.user`
 token=`git config github.token`
 
+if [ "$username" = "" ]; then 
+	username=`git config git.user`
+fi
 
 if [ "$username" = "" ]; then
 	printf "\n${RED} ERROR : Could not find username, run 'git config --global github.user <username>'${NORMAL}\n"
@@ -56,10 +59,6 @@ fi
 
 if [ "$repo_name" = "" ]; then
 	repo_name=$dir_name
-fi
-
-if [ "$account_name" = "" ]; then
-	account_name=$username
 fi
 
 if [ "$token" = "" ]; then
@@ -81,10 +80,13 @@ printf "user name = $username\n\n"
 # curl -u "$username:$token" https://api.github.com/user/repos -d '{"name":"'$repo_name'"}'
 # /orgs/:org/repos
 
-if ["$account_name" = "$username"]; then 
-	curl -u "$username:$token" https://api.github.com/user/repos -d '{"name":"'$repo_name'", "private":"true"}'
+if [ "$account_name" = "" ]; then 
+	printf "creating public repo at $username/$repo_name\n"
+	curl -u $username:$token https://api.github.com/user/repos -d "{\"name\":\"$repo_name\"}"
+	account_name=$username
 else 
-	curl -u "$username:$token" https://api.github.com/orgs/"$account_name"/repos -d '{"name":"'$repo_name'", "private":"true"}'
+	printf "creating private repo at $account_name/$repo_name\n"
+	curl -u $username:$token https://api.github.com/orgs/:$account_name/repos -d "{\"name\":\"$repo_name\", \"private\":\"true\"}"
 fi
 
 
