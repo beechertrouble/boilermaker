@@ -61,7 +61,7 @@ printf "\nrepo name = $repo_name\n"
 printf "account name = $account_name\n"
 printf "user name = $account_name\n\n"
 
-curl -u '"$user_name"' https://api.github.com/"$account_name"/repos -d "{\"name\":\"$repo_name\"}"
+curl -u "$user_name" https://api.github.com/"$account_name"/repos -d "{\"name\":\"$repo_name\"}"
 git init
 git add .
 git commit -am 'boilermaker slammed! ( initial commit )'
