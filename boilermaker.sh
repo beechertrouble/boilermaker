@@ -38,6 +38,12 @@ account_name=$2
 user_name=`git config github.user`
 token=`git config github.token`
 
+
+if [ "$username" = "" ]; then
+	printf "\n${RED} ERROR : Could not find username, run 'git config --global github.user <username>'${NORMAL}\n"
+	invalid_credentials=1
+fi
+
 if [ "$repo_name" = "" ]; then
 	printf "\nWhat should we call this git repo?\n"
 	printf "Maybe something like : client-project-purpose ?\n"
@@ -56,14 +62,14 @@ if [ "$account_name" = "" ]; then
 	account_name=$user_name
 fi
 
-  if [ "$token" = "" ]; then
-    echo "Could not find token, run 'git config --global github.token <token>'"
-    invalid_credentials=1
-  fi
+if [ "$token" = "" ]; then
+	printf "\n${RED} ERROR : Could not find token, run 'git config --global github.token <token>'${NORMAL}\n"
+	invalid_credentials=1
+fi
  
-  if [ "$invalid_credentials" == "1" ]; then
-    return 1
-  fi
+if [ "$invalid_credentials" == "1" ]; then
+	return 1
+fi
 
 printf "\nrepo name = $repo_name\n"
 printf "account name = $account_name\n"
