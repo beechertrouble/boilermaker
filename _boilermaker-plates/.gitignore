@@ -1,4 +1,12 @@
+#
+# some basic stuff
+#
 *.DS_store
 /node_modules
 .vagrant/
+
+#
+# some boilermaker specific things
+#
 _boilermaker-plates
+boilermaker.sh 

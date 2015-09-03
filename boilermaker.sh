@@ -11,9 +11,9 @@ printf "\n\n"
 printf "${BLUE}-------------------------\n"
 printf "${BLUE}boilermaker : ${NORMAL}deleting the boilermaker repo ...\n"
 
-#rm -rf .git
-#rm -rf .gitignore
-#mv _boilermaker-plates/.gitignore .gitignore
+rm -rf .git
+rm -rf .gitignore
+mv _boilermaker-plates/.gitignore .gitignore
 if [ -d .git ]; then 
 	printf "${RED}error deleting git repo.\n"
 	printf "${NORMAL}try running with sudo?\n"
@@ -50,11 +50,11 @@ fi
 printf "repo name = $repo_name\n"
 printf "account name = $account_name\n"
 
-# git init
-# git add .
-# git commit -am 'boilermaker slammed! ( initial commit )'
-# git remote add origin "https://github.com/$account_name/$repo_name.git"
-# git push origin master
+git init
+git add .
+git commit -am 'boilermaker slammed! ( initial commit )'
+git remote add origin "https://github.com/$account_name/$repo_name.git"
+git push origin master
 
 printf "${BLUE}-------------------------${NORMAL}"
 printf "\n\n"
