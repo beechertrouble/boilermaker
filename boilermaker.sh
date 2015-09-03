@@ -1,4 +1,5 @@
 #!/bin/sh
+
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 BLUE=$(tput setaf 4)
@@ -11,9 +12,9 @@ printf "\n\n"
 printf "${BLUE}-------------------------\n"
 printf "${BLUE}boilermaker : ${NORMAL}deleting the boilermaker repo ...\n"
 
-rm -rf .git
-rm -rf .gitignore
-mv _boilermaker-plates/.gitignore .gitignore
+# rm -rf .git
+# rm -rf .gitignore
+# mv _boilermaker-plates/.gitignore .gitignore
 if [ -d .git ]; then 
 	printf "${RED}error deleting git repo.\n"
 	printf "${NORMAL}try running with sudo?\n"
@@ -34,67 +35,14 @@ printf "${BLUE}boilermaker : ${NORMAL}creating new git repo ...\n"
 
 repo_name=$1
 dir_name=`basename $(pwd)`
-account_name=$2
+account_name_default=`git config github.account`
+account_name=`git config github.account`
+org_name=$3
+private_repo='y'
 username=`git config github.user`
 token=`git config github.token`
 
-if [ "$username" = "" ]; then 
-	username=`git config git.user`
-fi
-
-if [ "$username" = "" ]; then
-	printf "\n${RED} ERROR : Could not find username, run 'git config --global github.user <username>'${NORMAL}\n"
-	invalid_credentials=1
-fi
-
-if [ "$repo_name" = "" ]; then
-	printf "\nWhat should we call this git repo?\n"
-	printf "Maybe something like : client-project-purpose ?\n"
-	printf "Please enter the git REPO_NAME and press enter. ( press enter to use '$dir_name' ) \n"
-	read repo_name
-	printf "\nWhat github account/organization should we put this repo under?\n"
-	printf "Please enter your git ACCOUNT_NAME/ORGANIZATION and press enter. ( press enter to use '$username' )\n"
-	read account_name 
-fi
-
-if [ "$repo_name" = "" ]; then
-	repo_name=$dir_name
-fi
-
-if [ "$token" = "" ]; then
-	printf "\n${RED} ERROR : Could not find token, run 'git config --global github.token <token>'${NORMAL}\n"
-	printf "you may have to create a token here : https://github.com/settings/tokens\n"
-	invalid_credentials=1
-fi
- 
-if [ "$invalid_credentials" == "1" ]; then
-	return 1
-fi
-
-printf "\nrepo name = $repo_name\n"
-printf "account name = $account_name\n"
-printf "token = $token\n"
-printf "user name = $username\n\n"
-
-#curl -u "$username" https://api.github.com/"$account_name"/repos -d "{\"name\":\"$repo_name\"}"
-# curl -u "$username:$token" https://api.github.com/user/repos -d '{"name":"'$repo_name'"}'
-# /orgs/:org/repos
-
-if [ "$account_name" = "" ]; then 
-	printf "creating public repo at $username/$repo_name\n"
-	curl -u $username:$token https://api.github.com/user/repos -d "{\"name\":\"$repo_name\"}"
-	account_name=$username
-else 
-	printf "creating private repo at $account_name/$repo_name\n"
-	curl -u $username:$token https://api.github.com/orgs/:$account_name/repos -d "{\"name\":\"$repo_name\", \"private\":\"true\"}"
-fi
-
-
-git init
-git add .
-git commit -am 'boilermaker slammed! ( initial commit )'
-git remote add origin "https://github.com/$account_name/$repo_name.git"
-git push origin master
+source ../boilermaker/_boilermaker-plates/bash_scripts/create_repo.sh
 
 printf "${BLUE}-------------------------${NORMAL}"
 printf "\n\n"
@@ -123,7 +71,7 @@ printf "${BLUE}boilermaker : ${NORMAL}remove the boilermaker plates ...\n"
 printf "\n${GREEN}\n"
 printf ">-------------------------\n"
 printf ">-------------------------\n\n"
-printf "DONE!\n\n"
+printf "boilermaker : DONE!\n\n"
 printf ">-------------------------\n"
 printf ">-------------------------"
 printf "${NORMAL}\n\n\n\n"
