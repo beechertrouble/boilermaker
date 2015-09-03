@@ -61,7 +61,17 @@ printf "\nrepo name = $repo_name\n"
 printf "account name = $account_name\n"
 printf "user name = $account_name\n\n"
 
-curl -u "$user_name" https://api.github.com/"$account_name"/repos -d "{\"name\":\"$repo_name\"}"
+#curl -u "$user_name" https://api.github.com/"$account_name"/repos -d "{\"name\":\"$repo_name\"}"
+# curl -u "$username:$token" https://api.github.com/user/repos -d '{"name":"'$repo_name'"}'
+# /orgs/:org/repos
+
+if ["$account_name" = "$user_name"]; then 
+	curl -u "$user_name" https://api.github.com/user/repos -d '{"name":"'$repo_name'", "private":"true"}'
+else 
+	curl -u "$user_name" https://api.github.com/orgs/"$account_name"/repos -d '{"name":"'$repo_name'", "private":"true"}'
+fi
+
+
 git init
 git add .
 git commit -am 'boilermaker slammed! ( initial commit )'
