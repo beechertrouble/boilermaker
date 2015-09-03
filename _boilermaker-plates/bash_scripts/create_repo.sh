@@ -101,8 +101,8 @@ else
 fi
 
 
-# git init
-# git add .
-# git commit -am 'boilermaker slammed! ( initial commit )'
-# git remote add origin "https://github.com/$account_name/$repo_name.git"
-# git push origin master
+git init
+git add .
+git commit -am 'boilermaker slammed! ( initial commit )'
+git remote add origin "https://github.com/$account_name/$repo_name.git"
+git push origin master
