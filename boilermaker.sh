@@ -35,7 +35,7 @@ printf "${BLUE}boilermaker : ${NORMAL}creating new git repo ...\n"
 repo_name=$1
 dir_name=`basename $(pwd)`
 account_name=$2
-user_name=`git config github.user`
+username=`git config github.user`
 token=`git config github.token`
 
 
@@ -50,7 +50,7 @@ if [ "$repo_name" = "" ]; then
 	printf "Please enter the git REPO_NAME and press enter. ( press enter to use '$dir_name' ) \n"
 	read repo_name
 	printf "\nWhat github account/organization should we put this repo under?\n"
-	printf "Please enter your git ACCOUNT_NAME/ORGANIZATION and press enter. ( press enter to use '$user_name' )\n"
+	printf "Please enter your git ACCOUNT_NAME/ORGANIZATION and press enter. ( press enter to use '$username' )\n"
 	read account_name 
 fi
 
@@ -59,11 +59,12 @@ if [ "$repo_name" = "" ]; then
 fi
 
 if [ "$account_name" = "" ]; then
-	account_name=$user_name
+	account_name=$username
 fi
 
 if [ "$token" = "" ]; then
 	printf "\n${RED} ERROR : Could not find token, run 'git config --global github.token <token>'${NORMAL}\n"
+	printf "you may have to create a token here : https://github.com/settings/tokens\n"
 	invalid_credentials=1
 fi
  
@@ -74,16 +75,16 @@ fi
 printf "\nrepo name = $repo_name\n"
 printf "account name = $account_name\n"
 printf "token = $token\n"
-printf "user name = $account_name\n\n"
+printf "user name = $username\n\n"
 
-#curl -u "$user_name" https://api.github.com/"$account_name"/repos -d "{\"name\":\"$repo_name\"}"
+#curl -u "$username" https://api.github.com/"$account_name"/repos -d "{\"name\":\"$repo_name\"}"
 # curl -u "$username:$token" https://api.github.com/user/repos -d '{"name":"'$repo_name'"}'
 # /orgs/:org/repos
 
-if ["$account_name" = "$user_name"]; then 
-	curl -u "$user_name:$token" https://api.github.com/user/repos -d '{"name":"'$repo_name'", "private":"true"}'
+if ["$account_name" = "$username"]; then 
+	curl -u "$username:$token" https://api.github.com/user/repos -d '{"name":"'$repo_name'", "private":"true"}'
 else 
-	curl -u "$user_name:$token" https://api.github.com/orgs/"$account_name"/repos -d '{"name":"'$repo_name'", "private":"true"}'
+	curl -u "$username:$token" https://api.github.com/orgs/"$account_name"/repos -d '{"name":"'$repo_name'", "private":"true"}'
 fi
 
 
